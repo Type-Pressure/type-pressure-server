@@ -48,8 +48,13 @@ io.on('connection', function(socket){
 			position = data.position;
 			io.emit('position', position)
 		})
-		
 		socket.on('disconnect', function(){
+			position.forEach((el, i) => {
+				if (el.id === socket.id) {
+					position.splice(i, 1)
+				}
+			})
+			io.emit('position', position)
 			console.log('user disconnected');
 		});
 	}
