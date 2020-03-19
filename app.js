@@ -38,8 +38,8 @@ io.on('connection', function(socket){
 		// Cek perpindahan pemain pada sumbu x
 		socket.on('move', data => {
 			data.position.forEach(el => {
-				if(el.position.x === 520) {
-
+				if(el.position.x >= 580) {
+					el.position.x = 580
 				} else {
 					if (el.id === socket.id) {
 						el.position.x += 52
@@ -48,6 +48,9 @@ io.on('connection', function(socket){
 			})
 			position = data.position;
 			io.emit('position', position)
+		})
+		socket.on('finish', winner => {
+			io.emit('finish', winner)
 		})
 		socket.on('disconnect', function(){
 			position.forEach((el, i) => {
