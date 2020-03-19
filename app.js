@@ -2,7 +2,12 @@ const express = require('express')
 const app = express()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
-const port = 3000
+const env = process.env.NODE_ENV || 'development'
 
-http.listen(port, () => console.log(`listening on port ${port}`))
+if(env == 'development'){
+	require('dotenv').config()
+}
+
+
+http.listen(process.env.PORT, () => console.log(`listening on port ${process.env.PORT}`))
 
