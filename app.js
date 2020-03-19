@@ -1,12 +1,5 @@
-const express = require('express')
-const app = express()
-const http = require('http').createServer(app)
+const http = require('./http')
 const io = require('socket.io')(http)
-const env = process.env.NODE_ENV || 'development'
-
-if(env == 'development'){
-	require('dotenv').config()
-}
 
 let position = []
 
@@ -17,8 +10,6 @@ io.on('connection', function(socket){
 		i = 40
 		socket.on('addPlayer', data => {
 			// Untuk memberi jarak antar mobil
-			let unique = position.filter(el => el.id === data.socket_id)
-			// if(unique.length < 1) {
 				if (position.length === 0) {
 					data.position.y = 180
 					data.id = socket.id
@@ -63,8 +54,4 @@ io.on('connection', function(socket){
 		});
 	}
 	});
-
-
-
-http.listen(process.env.PORT, () => console.log(`listening on port ${process.env.PORT}`))
 
