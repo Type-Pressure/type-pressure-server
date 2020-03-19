@@ -12,23 +12,23 @@ let position = []
 
 let i = 0
 io.on('connection', function(socket){
-	console.log(socket.id);
 	if (position.length < 5) {
-		console.log(position.length)
 		console.log('a user connected')
 		i = 40
 		socket.on('addPlayer', data => {
 			// Untuk memberi jarak antar mobil
-			if (position.length === 0) {
-				data.position.y = 0
-				data.id = socket.id
-			} else {
-				console.log(position[position.length - 1].position.y)
-				data.position.y = position[position.length - 1].position.y + i
-				data.id = socket.id
-			}
-			position.push(data)
-			console.log(position);
+			let unique = position.filter(el => el.id === data.socket_id)
+			// if(unique.length < 1) {
+				if (position.length === 0) {
+					data.position.y = 180
+					data.id = socket.id
+				} else {
+					console.log(position[position.length - 1].position.y)
+					data.position.y = position[position.length - 1].position.y + i
+					data.id = socket.id
+				}
+				position.push(data)
+			// }
 			io.emit('position', position)
 		})
 
@@ -37,12 +37,13 @@ io.on('connection', function(socket){
 
 		// Cek perpindahan pemain pada sumbu x
 		socket.on('move', data => {
-			console.log(data);
-			console.log('Masuk di move');
 			data.position.forEach(el => {
-				console.log(el.id === socket.id);
-				if (el.id === socket.id) {
-					el.position.x += 20
+				if(el.position.x === 520) {
+
+				} else {
+					if (el.id === socket.id) {
+						el.position.x += 52
+					}
 				}
 			})
 			position = data.position;
