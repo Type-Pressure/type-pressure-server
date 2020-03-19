@@ -10,9 +10,15 @@ if(env == 'development'){
 
 let position = []
 
-
+let i = 0
 io.on('connection', function(socket){
-	console.log('a user connected');
+	console.log('a user connected')
+	i += 10
+	socket.on('addPlayer', data => {
+		data.position.y = i
+		position.push(data)
+		io.emit('position', position)
+	})
 	socket.emit('position', position)
 	socket.on('move', data => {
 		position.x += data
